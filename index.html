@@ -23,9 +23,7 @@ body {
     z-index: 1;
 }
 @keyframes fall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-    }
+    to { transform: translateY(110vh) rotate(360deg); }
 }
 
 /* Card */
@@ -33,7 +31,8 @@ body {
     position: relative;
     z-index: 10;
     background: white;
-    width: 520px;
+    width: 560px;
+    max-height: 80vh;
     padding: 40px;
     border-radius: 25px;
     text-align: center;
@@ -41,12 +40,13 @@ body {
     margin: auto;
     top: 50%;
     transform: translateY(-50%);
+    overflow-y: auto;
 }
 
 /* Photo */
 .photo {
-    width: 280px;
-    height: 280px;
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     object-fit: cover;
     border: 8px solid #ff4d6d;
@@ -55,10 +55,10 @@ body {
 
 /* Text */
 #text {
-    font-size: 22px;
+    font-size: 20px;
     color: #ff3366;
     margin-bottom: 30px;
-    min-height: 120px;
+    line-height: 1.6;
 }
 
 /* Buttons */
@@ -66,6 +66,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 button {
@@ -74,41 +75,23 @@ button {
     border-radius: 30px;
     border: none;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-.primary {
-    background: #ff4d6d;
-    color: white;
-}
-.primary:hover {
-    transform: scale(1.1);
-}
+.primary { background: #ff4d6d; color: white; }
+.secondary { background: #ddd; }
 
-.secondary {
-    background: #ddd;
-}
-.secondary:hover {
-    transform: scale(1.05);
-}
-
-/* Heart animations */
+/* Hearts */
 .heart {
     position: fixed;
-    font-size: 28px;
+    font-size: 30px;
     animation: floatUp 1.5s ease forwards;
     z-index: 999;
 }
 @keyframes floatUp {
-    from { opacity: 1; transform: translateY(0) scale(1); }
     to { opacity: 0; transform: translateY(-120px) scale(1.8); }
 }
-
-.break {
-    animation: breakHeart 1.2s ease forwards;
-}
+.break { animation: breakHeart 1.2s ease forwards; }
 @keyframes breakHeart {
-    from { transform: scale(1); opacity: 1; }
     to { transform: scale(0.3) rotate(30deg); opacity: 0; }
 }
 </style>
@@ -116,123 +99,127 @@ button {
 
 <body>
 
-<!-- 🎶 Background Music -->
-<audio autoplay loop>
+<audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card">
     <img id="photo" class="photo" src="img1.jpg">
-    <div id="text">Will you be my Valentine? 💖</div>
-    <div class="buttons">
+
+    <div id="text">
+        Will you be my Valentine?
+    </div>
+
+    <div class="buttons" id="buttons">
         <button id="btn1" class="primary">Yes</button>
         <button id="btn2" class="secondary">No</button>
     </div>
 </div>
 
 <script>
-/* ROSE PETALS */
-function createPetal() {
-    const petal = document.createElement("div");
-    petal.className = "petal";
-    petal.innerText = "🌹";
-    petal.style.left = Math.random() * 100 + "vw";
-    petal.style.animationDuration = 8 + Math.random() * 5 + "s";
-    document.body.appendChild(petal);
-    setTimeout(() => petal.remove(), 15000);
+/* MUSIC */
+function startMusic() {
+    const music = document.getElementById("bgMusic");
+    if (music.paused) music.play();
 }
-setInterval(createPetal, 700);
 
-/* IMAGE SLIDESHOW */
-const images = [
-    "img1.jpg","img2.jpg","img3.jpg","img4.jpg","img5.jpg",
-    "img6.jpg","img7.jpg","img8.jpg","img9.jpg","img10.jpg"
-];
+/* PETALS */
 setInterval(() => {
-    const img = images[Math.floor(Math.random() * images.length)];
-    document.getElementById("photo").src = img;
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.innerText = "🌹";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = 8 + Math.random() * 5 + "s";
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 15000);
+}, 700);
+
+/* SLIDESHOW */
+const images = [...Array(10)].map((_,i)=>`img${i+1}.jpg`);
+setInterval(() => {
+    photo.src = images[Math.floor(Math.random()*images.length)];
 }, 10000);
 
-/* HEART EFFECTS */
+/* EFFECTS */
 function loveEffect() {
-    for (let i = 0; i < 8; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerText = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.top = "60vh";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 1500);
+    for(let i=0;i<6;i++){
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerText="💖";
+        h.style.left=Math.random()*100+"vw";
+        h.style.top="60vh";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),1500);
     }
 }
-
 function breakEffect() {
-    const heart = document.createElement("div");
-    heart.className = "heart break";
-    heart.innerText = "💔";
-    heart.style.left = "50vw";
-    heart.style.top = "55vh";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 1200);
+    const h=document.createElement("div");
+    h.className="heart break";
+    h.innerText="💔";
+    h.style.left="50vw";
+    h.style.top="55vh";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1200);
 }
 
 /* PAGE LOGIC */
-let page = 1;
-const text = document.getElementById("text");
-const btn1 = document.getElementById("btn1");
-const btn2 = document.getElementById("btn2");
+let page=1;
+const text=document.getElementById("text");
+const btn1=document.getElementById("btn1");
+const btn2=document.getElementById("btn2");
+const buttons=document.getElementById("buttons");
 
-function goToPage2() {
-    page = 2;
-    text.innerHTML = "Are you sure? 🥺";
-    btn1.innerText = "Absolutely";
-    btn2.innerText = "Maybe Not";
-    loveEffect();
+function page2(){
+    page=2;
+    text.innerHTML="Are, you sure?";
+    btn1.innerText="Absolutely";
+    btn2.innerText="Maybe Not";
 }
 
-btn1.onclick = () => {
+btn1.onclick=()=>{
+    startMusic();
     loveEffect();
 
-    if (page === 1 || page >= 3) goToPage2();
-    else if (page === 2) {
-        text.innerHTML = `NO NO NO! ABSOLUTELY NOT!<br><br>
-        I AM YOUR BEST FRIEND AND YOU ARE SUKOON FOR ME!<br>
-        I AM YOUR CHARN AND YOU ARE MY ZEEL KAUR!<br>
-        I AM YOUR SUKUNA AND YOU ARE MY YUJI ITADORI!<br><br>
-        *** LET'S NOT SPOIL THIS ***<br><br>
-        HAPPY VALENTINE'S DAY ❤️<br>
-        FROM ME TO MY PASANDIDA AURAT 💫`;
+    if(page===1||page>=3){ page2(); }
+    else if(page===2){
+        text.innerHTML=`NO NO NO! ABSOLUTELY NOT! I AM YOUR BEST FRIEND AND YOU ARE SUKOON FOR ME! 
+        I AM YOUR CHARN AND YOU ARE MY ZEEL KAUR! 
+        I AM YOUR SUKUNA AND YOU ARE MY YUJI IADORI! 
+        *** LET'S NOT SPOIL THIS *** 
+        Also, tennu hune recently samjha k hatya ki you deserve the best, frr m kithho best hogya??? Paagla!!! 
 
-        btn1.style.display = "none";
-        btn2.style.display = "none";
+        BUT STILL, HAPPY VALENTINE'S DAY ❤️ FROM ME TO MY CURRENT MOST FAVOURITE PERSON (Pasandida Aurat) ON THIS PLANET. 
+        But still je tra modd hai ki nhi saanu te koi L letter to shuru hon waale naal hi galla maarnia ne, then ok! your wish! You do have 2 choices in that case.`;
 
-        setTimeout(() => {
-            btn1.style.display = "inline-block";
-            btn2.style.display = "inline-block";
-            btn1.innerText = "Only 'C' letter BEST FRIEND";
-            btn2.innerText = "Finish the Friendship";
-            page = 4;
-        }, 10000);
+        buttons.style.display="none";
+
+        setTimeout(()=>{
+            buttons.style.display="flex";
+            btn1.innerText="NO 'L' letter person, Only 'C' letter BEST FRIEND";
+            btn2.innerText="Finish the Friendship";
+            page=4;
+        },10000);
     }
 };
 
-btn2.onclick = () => {
+btn2.onclick=()=>{
+    startMusic();
     breakEffect();
     page++;
-    const messages = {
-        3: "Really? 😢",
-        4: "Come on, I am so caring 🥺",
-        5: "Nah! You can't say No. Say Yes!",
-        6: "No No No, You have to say Yes!",
-        7: "WRONG ANSWER! CORRECT ANSWER IS YES!",
-        8: "DON'T YOU UNDERSTAND ENGLISH YOU CUTIE PIE?",
-        9: "tenu khauf ni Illuminati da? 😈",
-        10:"tenu Reels di sau, please hnn krde 😭"
+    const msgs={
+        3:"Really? 😢",
+        4:"Come on, I am so caring 🥺",
+        5:"Nah! You can't say No. I am too nice for that. Say Yes!",
+        6:"No No No, You have to say Yes!",
+        7:"WRONG ANSWER SELECTED! CORRECT ANSWER IS YES!",
+        8:"DON'T YOU UNDERSTAND ENGLISH YOU CUTIE PIE? Na da koi option hi hai ni, hun tennu haa hi select krna paina hai",
+        9:"tenu khauf ni Illuminati da? chupchap Yes select krr",
+        10:"tenu Reels di sau, please hnn krde"
     };
-    text.innerHTML = messages[page] || messages[3];
-    btn1.innerText = "I change my answer to Yes";
-    btn2.innerText = "Still No";
-    if (page > 10) page = 3;
+    text.innerHTML=msgs[page]||msgs[3];
+    btn1.innerText="I change my answer to Yes";
+    btn2.innerText="Still No";
+    if(page>10)page=3;
 };
 </script>
 
