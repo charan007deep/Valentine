@@ -7,10 +7,14 @@
 <style>
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     font-family: 'Segoe UI', cursive;
     background: linear-gradient(120deg, #ff758c, #ff7eb3);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Falling petals */
@@ -32,17 +36,19 @@ body {
     z-index: 10;
     background: white;
     width: 560px;
-    max-height: 80vh;
-    padding: 40px;
+    max-height: 85vh;
     border-radius: 25px;
-    text-align: center;
     box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-    margin: auto;
-    top: 50%;
-    transform: translateY(-50%);
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
+.card-content {
+    padding: 40px;
+    overflow-y: auto;
+    max-height: 85vh;
+}
+    
 /* Photo */
 .photo {
     width: 300px;
@@ -104,11 +110,19 @@ button {
 </audio>
 
 <div class="card">
-    <img id="photo" class="photo" src="img1.jpg">
+    <div class="card-content">
+        <img id="photo" class="photo" src="img1.jpg">
 
-    <div id="text">
-        Will you be my Valentine?
+        <div id="text">
+            Will you be my Valentine?
+        </div>
+
+        <div class="buttons" id="buttons">
+            <button id="btn1" class="primary">Yes</button>
+            <button id="btn2" class="secondary">No</button>
+        </div>
     </div>
+</div>
 
     <div class="buttons" id="buttons">
         <button id="btn1" class="primary">Yes</button>
@@ -225,3 +239,4 @@ btn2.onclick=()=>{
 
 </body>
 </html>
+
